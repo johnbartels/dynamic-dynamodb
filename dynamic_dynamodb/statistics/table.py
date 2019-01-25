@@ -44,6 +44,10 @@ def get_consumed_read_units_percent(
         table_read_units = dynamodb.get_provisioned_table_read_units(
             table_name)
 
+        # table reads can never be set to 0 in aws ddb and cause a division by zero error if 0
+        if table_read_units == 0:
+          table_read_units = 1;
+
         consumed_read_units_percent = (
             float(consumed_read_units) /
             float(table_read_units) * 100)
