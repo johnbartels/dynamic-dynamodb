@@ -123,6 +123,15 @@ def execute():
             table_num_consec_write_checks = 0
 
         try:
+            # we need to check to see if ondemand is enabled 
+            # if ondemand is enabled, 0 provisioned writes/reads will be returned
+            # which leads to a ZeroDivisionError
+            on_demand_enabled = dynamodb.check_ondemand_table_enabled(table_name);
+
+            if on_demand_enabled:
+                # Continue if ondemand or pay-per-request is enabled
+                continue
+
             # The return var shows how many times the scale-down criteria
             #  has been met. This is coupled with a var in config,
             # "num_intervals_scale_down", to delay the scale-down

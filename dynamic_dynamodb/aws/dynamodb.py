@@ -103,6 +103,30 @@ def get_gsi_status(table_name, gsi_name):
         if gsi[u'IndexName'] == gsi_name:
             return gsi[u'IndexStatus']
 
+def check_ondemand_table_enabled(table_name):
+    """ Returns true if ondemand enabled for table
+
+    :type table_name: str
+    :param table_name: Name of the DynamoDB table
+    :returns: bool -- true if ondemand enabled
+    """
+    try:
+        desc = DYNAMODB_CONNECTION.describe_table(table_name)
+    except JSONResponseError:
+        raise
+    bool is_enabled = False;
+    read_units = int(
+        desc[u'Table'][u'ProvisionedThroughput'][u'ReadCapacityUnits'])
+    write_units = int(
+        desc[u'Table'][u'ProvisionedThroughput'][u'WriteCapacityUnits'])
+
+    logger.debug('{0} - Currently provisioned read units: {1:d}'.format(
+        table_name, read_units))
+    logger.debug('{0} - Currently provisioned write units: {1:d}'.format(
+        table_name, write_units))
+    if read_units == 0 OR write_units == 0:
+        is_enabled = True;
+    return is_enabled;
 
 def get_provisioned_gsi_read_units(table_name, gsi_name):
     """ Returns the number of provisioned read units for the table
