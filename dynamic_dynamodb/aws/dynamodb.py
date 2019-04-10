@@ -124,7 +124,7 @@ def check_ondemand_table_enabled(table_name):
         table_name, read_units))
     logger.debug('{0} - Currently provisioned write units: {1:d}'.format(
         table_name, write_units))
-    if read_units == 0 OR write_units == 0:
+    if read_units == 0 or write_units == 0:
         is_enabled = True;
     return is_enabled;
 
