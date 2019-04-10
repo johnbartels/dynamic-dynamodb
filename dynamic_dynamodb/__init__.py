@@ -130,6 +130,8 @@ def execute():
 
             if on_demand_enabled:
                 # Continue if ondemand or pay-per-request is enabled
+                logger.info('Skipping Table: {0} Due to On-Demand or Pay-Per-Request being Enabled!').format(
+                                    table_name))
                 continue
 
             # The return var shows how many times the scale-down criteria
