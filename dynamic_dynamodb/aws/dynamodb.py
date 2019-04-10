@@ -114,7 +114,7 @@ def check_ondemand_table_enabled(table_name):
         desc = DYNAMODB_CONNECTION.describe_table(table_name)
     except JSONResponseError:
         raise
-    bool is_enabled = False;
+    is_enabled = False;
     read_units = int(
         desc[u'Table'][u'ProvisionedThroughput'][u'ReadCapacityUnits'])
     write_units = int(
